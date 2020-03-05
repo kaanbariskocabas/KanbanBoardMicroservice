@@ -37,7 +37,6 @@ public class JwtUser implements UserDetails {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
-    @JsonIgnore
     public Long getId() {
         return id;
     }
@@ -78,6 +77,7 @@ public class JwtUser implements UserDetails {
         return password;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return getEmail();
