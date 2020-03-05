@@ -1,0 +1,19 @@
+# ======== GENERAL ========
+server:
+  port: 8085
+
+# ======== JWT ========
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: /auth
+      refresh: /refresh
+
+# ======== H2 ========
+spring:
+  h2:
+    console:
+      enabled: true
