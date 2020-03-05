@@ -7,6 +7,7 @@ jwt:
   header: Authorization
   secret: mySecret
   expiration: 604800
+  prefix: "Bearer "
   route:
     authentication:
       path: /auth

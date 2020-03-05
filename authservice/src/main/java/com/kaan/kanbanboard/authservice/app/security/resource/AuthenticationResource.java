@@ -53,7 +53,7 @@ public class AuthenticationResource {
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
-        final String token = authToken.substring(7);
+        final String token = jwtTokenUtil.getRefactoredToken(authToken);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
 

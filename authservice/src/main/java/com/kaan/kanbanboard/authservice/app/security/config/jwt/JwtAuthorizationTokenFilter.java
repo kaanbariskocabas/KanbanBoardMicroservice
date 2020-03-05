@@ -28,11 +28,16 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final String tokenHeader;
+    private final String tokenPrefix;
 
-    public JwtAuthorizationTokenFilter(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, @Value("${jwt.header}") String tokenHeader) {
+    public JwtAuthorizationTokenFilter(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService,
+                                       JwtTokenUtil jwtTokenUtil,
+                                       @Value("${jwt.header}") String tokenHeader,
+                                       @Value("${jwt.prefix}") String tokenPrefix) {
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.tokenHeader = tokenHeader;
+        this.tokenPrefix = tokenPrefix;
     }
 
     @Override
@@ -43,8 +48,8 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
         String username = null;
         String authToken = null;
-        if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
-            authToken = requestHeader.substring(7);
+        if (requestHeader != null && requestHeader.startsWith(tokenPrefix)) {
+            authToken = jwtTokenUtil.getRefactoredToken(requestHeader);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
@@ -69,7 +74,6 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
                 return;
             }
-
 
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)

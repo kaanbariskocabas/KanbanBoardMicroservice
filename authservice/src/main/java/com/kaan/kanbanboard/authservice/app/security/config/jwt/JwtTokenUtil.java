@@ -30,6 +30,9 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    @Value("${jwt.prefix}")
+    private String tokenPrefix;
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -40,6 +43,12 @@ public class JwtTokenUtil implements Serializable {
 
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    public String getRefactoredToken(String token) {
+        return token != null
+                ? token.substring(tokenPrefix.length())
+                : null;
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
