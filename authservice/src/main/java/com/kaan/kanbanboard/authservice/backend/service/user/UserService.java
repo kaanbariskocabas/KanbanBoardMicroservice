@@ -4,12 +4,11 @@ import com.kaan.kanbanboard.authservice.backend.model.User;
 
 /**
  * @author Kaan Kocabas
- *
  */
 public interface UserService {
 
-public User addUser(User user);
+    public User addUser(User user);
 
-	User findByEmail(String email);
-	
+    User findByEmail(String email);
+
 }

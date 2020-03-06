@@ -1,8 +1,8 @@
 package com.kaan.kanbanboard.authservice.app.security.config;
 
-import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtUser;
 import com.kaan.kanbanboard.authservice.backend.model.Role;
 import com.kaan.kanbanboard.authservice.backend.model.User;
+import com.kaan.kanbanboard.authservice.backend.model.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,8 +15,8 @@ public class JwtUserFactory {
     private JwtUserFactory() {
     }
 
-    public static JwtUser create(User user) {
-        return new JwtUser(
+    public static UserDTO create(User user) {
+        return new UserDTO(
                 user.getUserId(),
                 user.getEmail(),
                 user.getFirstname(),

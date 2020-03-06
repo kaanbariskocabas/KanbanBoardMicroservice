@@ -1,5 +1,6 @@
 package com.kaan.kanbanboard.authservice.app.security.config.jwt;
 
+import com.kaan.kanbanboard.authservice.backend.model.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
@@ -116,7 +117,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        JwtUser user = (JwtUser) userDetails;
+        UserDTO user = (UserDTO) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
         //final Date expiration = getExpirationDateFromToken(token);

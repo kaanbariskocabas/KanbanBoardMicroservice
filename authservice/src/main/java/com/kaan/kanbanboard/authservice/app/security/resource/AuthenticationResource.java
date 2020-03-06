@@ -3,7 +3,7 @@ package com.kaan.kanbanboard.authservice.app.security.resource;
 import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtAuthenticationRequest;
 import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtAuthenticationResponse;
 import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtTokenUtil;
-import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtUser;
+import com.kaan.kanbanboard.authservice.backend.model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +55,7 @@ public class AuthenticationResource {
         String authToken = request.getHeader(tokenHeader);
         final String token = jwtTokenUtil.getRefactoredToken(authToken);
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        UserDTO user = (UserDTO) userDetailsService.loadUserByUsername(username);
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);

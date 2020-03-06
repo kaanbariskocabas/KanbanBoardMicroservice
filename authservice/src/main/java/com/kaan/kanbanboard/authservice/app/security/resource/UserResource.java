@@ -1,7 +1,7 @@
 package com.kaan.kanbanboard.authservice.app.security.resource;
 
 import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtTokenUtil;
-import com.kaan.kanbanboard.authservice.app.security.config.jwt.JwtUser;
+import com.kaan.kanbanboard.authservice.backend.model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,10 +27,10 @@ public class UserResource {
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public JwtUser getAuthenticatedUser(HttpServletRequest request) {
+    public UserDTO getAuthenticatedUser(HttpServletRequest request) {
         String token = jwtTokenUtil.getRefactoredToken(request.getHeader(tokenHeader));
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        UserDTO user = (UserDTO) userDetailsService.loadUserByUsername(username);
         return user;
     }
 }

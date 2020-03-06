@@ -1,33 +1,100 @@
 package com.kaan.kanbanboard.authservice.backend.model.dto;
 
-import com.kaan.kanbanboard.authservice.backend.model.Role;
-import com.kaan.kanbanboard.authservice.backend.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.Date;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
-    private Long userId;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private Set<Role> roles;
-    private boolean isActive;
+public class UserDTO implements UserDetails {
 
-    public UserDTO(User user) {
-        super();
-        if (user != null) {
-            this.userId = user.getUserId();
-            this.firstname = user.getFirstname();
-            this.lastname = user.getLastname();
-            this.email = user.getEmail();
-            this.roles = user.getRoles();
-            this.isActive = user.isActive();
-        }
+    private final Long userId;
+    private final String email;
+    private final String firstname;
+    private final String lastname;
+    private final String password;
+    private final Collection<? extends GrantedAuthority> authorities;
+    private final boolean enabled;
+    private final Date lastPasswordResetDate;
+
+    public UserDTO(
+            Long userId,
+            String email,
+            String firstname,
+            String lastname,
+            String password, Collection<? extends GrantedAuthority> authorities,
+            boolean enabled,
+            Date lastPasswordResetDate
+    ) {
+        this.userId = userId;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+        this.enabled = enabled;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
     }
 }
